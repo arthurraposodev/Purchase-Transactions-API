@@ -24,7 +24,7 @@
 - [📍 Overview](#-overview)
 - [📦 Features](#-features)
 - [📂 Repository Structure](#-repository-structure)
-- [⚙️ Files](#-files)
+- [⚙️ Modules](#-modules)
 - [🚀 Getting Started](#-getting-started)
     - [🔧 Installation](#-installation)
     - [🤖 Running the Application](#-running-the-application)
@@ -109,7 +109,7 @@ Application and Treasury API health may be verified using the [Health](http://lo
     ├── job/: Scheduled jobs.
 ```
 
-## ⚙️ Files
+## ⚙️ Modules
 
 <details closed><summary>Purchases</summary>
 
