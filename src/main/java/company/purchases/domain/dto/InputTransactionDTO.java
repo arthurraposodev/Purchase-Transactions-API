@@ -7,6 +7,9 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Input transaction dto, for receiving data in endpoints.
+ */
 @Data
 public class InputTransactionDTO {
     @Size(max = 50,message = "Description field can only be 50 characters long.")

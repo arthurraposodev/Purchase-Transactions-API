@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+/**
+ * Spring Actuator health endpoint which checks for a 200 response from the Treasury Api.
+ */
 @RequiredArgsConstructor
 @Component
 public class ExchangeRateClientHealth implements ReactiveHealthIndicator {

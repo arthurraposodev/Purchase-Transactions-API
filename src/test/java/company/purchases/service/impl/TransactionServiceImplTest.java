@@ -2,6 +2,8 @@ package company.purchases.service.impl;
 
 import company.purchases.domain.ExchangeRate;
 import company.purchases.domain.Transaction;
+import company.purchases.domain.dto.ConvertedOutputTransactionDTO;
+import company.purchases.domain.dto.InputTransactionDTO;
 import company.purchases.domain.dto.OutputTransactionDTO;
 import company.purchases.domain.mapper.TransactionMapper;
 import company.purchases.repository.ExchangeRateRepository;
@@ -21,6 +23,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 class TransactionServiceImplTest {
@@ -52,35 +55,41 @@ class TransactionServiceImplTest {
         transaction.setId(transactionId);
         transaction.setAmount(BigDecimal.valueOf(100));
         transaction.setRecordDate(LocalDate.now());
+        LocalDate sixMonthsAgo = transaction.getRecordDate().minusMonths(6);
         ExchangeRate exchangeRate = new ExchangeRate();
         exchangeRate.setRate(BigDecimal.valueOf(1.5));
+        ConvertedOutputTransactionDTO convertedOutputTransactionDTO = new ConvertedOutputTransactionDTO();
+        convertedOutputTransactionDTO.setAmount(BigDecimal.valueOf(150));
         when(transactionRepository.findById(transactionId)).thenReturn(Mono.just(transaction));
-        when(exchangeRateRepository.findByCurrencyAndRecordDateMinusSixMonths(targetCurrency, transaction.getRecordDate())).thenReturn(Mono.just(exchangeRate));
+        when(exchangeRateRepository.findByCurrencyAndRecordDateMinusSixMonths(targetCurrency, sixMonthsAgo, transaction.getRecordDate())).thenReturn(Mono.just(exchangeRate));
+        when(transactionMapper.convertToConvertedOutputTransactionDTO(any(),any(),any())).thenReturn(convertedOutputTransactionDTO);
 
         // Act
-        Mono<Transaction> result = transactionService.getTransactionWithConvertedAmount(transactionId, targetCurrency);
+        Mono<ConvertedOutputTransactionDTO> result = transactionService.getTransactionWithConvertedAmount(transactionId, targetCurrency);
 
         // Assert
         StepVerifier.create(result)
-                .expectNextMatches(t -> t.getAmount().toString().equals("150.00"))
+                .expectNextMatches(t -> t.getAmount().toString().equals("150"))
                 .verifyComplete();
     }
 
     @Test
-    @DisplayName("'getTransactionById' returns a Mono of Transaction when given a valid transactionId")
+    @DisplayName("'getTransactionById' returns a Mono of OutputTransactionDTO when given a valid transactionId")
     void getTransactionById_validInputTest() {
         // Arrange
         Long transactionId = 1L;
         Transaction transaction = new Transaction();
         transaction.setId(transactionId);
         when(transactionRepository.findById(transactionId)).thenReturn(Mono.just(transaction));
+        OutputTransactionDTO outputTransactionDTO = new OutputTransactionDTO();
+        when(transactionMapper.convertToOutputTransactionDTO(transaction)).thenReturn(outputTransactionDTO);
 
         // Act
-        Mono<Transaction> result = transactionService.getTransactionById(transactionId);
+        Mono<OutputTransactionDTO> result = transactionService.getTransactionById(transactionId);
 
         // Assert
         StepVerifier.create(result)
-                .expectNext(transaction)
+                .expectNext(outputTransactionDTO)
                 .verifyComplete();
     }
 
@@ -88,15 +97,21 @@ class TransactionServiceImplTest {
     @DisplayName("'save' returns a Mono of OutputTransactionDTO when given a valid Transaction")
     void saveValidInputTest() {
         // Arrange
+        InputTransactionDTO inputTransactionDTO = new InputTransactionDTO();
+        inputTransactionDTO.setAmount(BigDecimal.valueOf(100));
+        inputTransactionDTO.setRecordDate(LocalDate.now());
+
         Transaction transaction = new Transaction();
         transaction.setId(1L);
         transaction.setAmount(BigDecimal.valueOf(100));
         transaction.setRecordDate(LocalDate.now());
+
         when(transactionRepository.save(transaction)).thenReturn(Mono.just(transaction));
+        when(transactionMapper.convertToEntity(any())).thenReturn(transaction);
         when(transactionMapper.convertToOutputTransactionDTO(transaction)).thenReturn(new OutputTransactionDTO());
 
         // Act
-        Mono<OutputTransactionDTO> result = transactionService.save(transaction);
+        Mono<OutputTransactionDTO> result = transactionService.save(inputTransactionDTO);
 
         // Assert
         StepVerifier.create(result)
@@ -113,11 +128,12 @@ class TransactionServiceImplTest {
         Transaction transaction = new Transaction();
         transaction.setId(transactionId);
         transaction.setRecordDate(LocalDate.now());
+        LocalDate sixMonthsAgo = transaction.getRecordDate().minusMonths(6);
         when(transactionRepository.findById(transactionId)).thenReturn(Mono.just(transaction));
-        when(exchangeRateRepository.findByCurrencyAndRecordDateMinusSixMonths(targetCurrency, transaction.getRecordDate())).thenReturn(Mono.empty());
+        when(exchangeRateRepository.findByCurrencyAndRecordDateMinusSixMonths(targetCurrency, sixMonthsAgo, transaction.getRecordDate())).thenReturn(Mono.empty());
 
         // Act
-        Mono<Transaction> result = transactionService.getTransactionWithConvertedAmount(transactionId, targetCurrency);
+        Mono<ConvertedOutputTransactionDTO> result = transactionService.getTransactionWithConvertedAmount(transactionId, targetCurrency);
 
         // Assert
         StepVerifier.create(result)
@@ -133,11 +149,14 @@ class TransactionServiceImplTest {
         transaction.setId(1L);
         transaction.setAmount(BigDecimal.valueOf(100.123));
         transaction.setRecordDate(LocalDate.now());
+        InputTransactionDTO inputTransactionDTO = new InputTransactionDTO();
+
         when(transactionRepository.save(transaction)).thenReturn(Mono.just(transaction));
+        when(transactionMapper.convertToEntity(any())).thenReturn(transaction);
         when(transactionMapper.convertToOutputTransactionDTO(transaction)).thenReturn(new OutputTransactionDTO());
 
         // Act
-        Mono<OutputTransactionDTO> result = transactionService.save(transaction);
+        Mono<OutputTransactionDTO> result = transactionService.save(inputTransactionDTO);
 
         // Assert
         StepVerifier.create(result)

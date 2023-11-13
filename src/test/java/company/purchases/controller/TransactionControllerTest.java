@@ -1,6 +1,7 @@
 package company.purchases.controller;
 
 import company.purchases.domain.Transaction;
+import company.purchases.domain.dto.ConvertedOutputTransactionDTO;
 import company.purchases.domain.dto.OutputTransactionDTO;
 import company.purchases.domain.mapper.TransactionMapper;
 import company.purchases.service.TransactionService;
@@ -46,7 +47,7 @@ class TransactionControllerTest {
         RateLimiter rateLimiter = mock(RateLimiter.class);
 
         TransactionMapper transactionMapper = new TransactionMapper(new ModelMapper());
-        TransactionController transactionController = new TransactionController(transactionService, transactionMapper,rateLimiter);
+        TransactionController transactionController = new TransactionController(transactionService,rateLimiter);
 
         // Act
         Flux<OutputTransactionDTO> result = transactionController.getTransactions();
@@ -70,19 +71,20 @@ class TransactionControllerTest {
         outputTransactionDTO.setAmount(BigDecimal.valueOf(100));
         outputTransactionDTO.setRecordDate(LocalDate.now());
 
-        Mono<Transaction> transactionMono = Mono.just(new Transaction());
+        Mono<ConvertedOutputTransactionDTO> convertedOutputTransactionDTOMono = Mono.just(new ConvertedOutputTransactionDTO());
+        Mono<OutputTransactionDTO> outputTransactionDTOMono = Mono.just(new OutputTransactionDTO());
 
         TransactionService transactionService = mock(TransactionService.class);
-        when(transactionService.getTransactionWithConvertedAmount(id, currency)).thenReturn(transactionMono);
-        when(transactionService.getTransactionById(id)).thenReturn(transactionMono);
+        when(transactionService.getTransactionWithConvertedAmount(id, currency)).thenReturn(convertedOutputTransactionDTOMono);
+        when(transactionService.getTransactionById(id)).thenReturn(outputTransactionDTOMono);
 
         RateLimiter rateLimiter = mock(RateLimiter.class);
 
         TransactionMapper transactionMapper = new TransactionMapper(new ModelMapper());
-        TransactionController transactionController = new TransactionController(transactionService, transactionMapper,rateLimiter);
+        TransactionController transactionController = new TransactionController(transactionService,rateLimiter);
 
         // Act
-        Mono<ResponseEntity<OutputTransactionDTO>> result = transactionController.getTransactionByIdAndCurrency(id, currency);
+        Mono<ResponseEntity<ConvertedOutputTransactionDTO>> result = transactionController.getTransactionByIdAndCurrency(id, currency);
 
         // Assert
         StepVerifier.create(result)

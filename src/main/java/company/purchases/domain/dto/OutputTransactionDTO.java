@@ -6,6 +6,9 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Output transaction dto for outputting data from endpoints.
+ */
 @Data
 public class OutputTransactionDTO {
     private Long id;

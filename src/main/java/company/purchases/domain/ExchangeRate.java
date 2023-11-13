@@ -13,6 +13,9 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Exchange rate entity object.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -7,13 +7,21 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
+/**
+ * Purchases application startup.
+ */
 @SpringBootApplication
 @ConfigurationPropertiesScan
 @EnableScheduling
 @EnableWebFlux
 public class PurchasesApplication {
 
-	public static void main(String[] args) {
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
+    public static void main(String[] args) {
 		SpringApplication.run(PurchasesApplication.class, args);
 	}
 

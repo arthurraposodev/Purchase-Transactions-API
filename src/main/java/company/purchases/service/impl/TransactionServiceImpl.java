@@ -1,6 +1,8 @@
 package company.purchases.service.impl;
 
 import company.purchases.domain.Transaction;
+import company.purchases.domain.dto.ConvertedOutputTransactionDTO;
+import company.purchases.domain.dto.InputTransactionDTO;
 import company.purchases.domain.dto.OutputTransactionDTO;
 import company.purchases.repository.ExchangeRateRepository;
 import company.purchases.domain.mapper.TransactionMapper;
@@ -18,6 +20,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 
+/**
+ * Transaction service implementation.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -26,16 +31,16 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
     private final TransactionMapper transactionMapper;
 
-    public Mono<Transaction> getTransactionWithConvertedAmount(Long transactionId, String targetCurrency) {
+    public Mono<ConvertedOutputTransactionDTO> getTransactionWithConvertedAmount(Long transactionId, String targetCurrency) {
         log.info("Fetching transaction with ID {} and converting to currency {}", transactionId, targetCurrency);
         return transactionRepository.findById(transactionId)
                 .flatMap(transaction -> {
                     LocalDate recordDate = transaction.getRecordDate();
-                    return exchangeRateRepository.findByCurrencyAndRecordDateMinusSixMonths(targetCurrency, recordDate)
+                    LocalDate sixMonthsAgo = recordDate.minusMonths(6);
+                    return exchangeRateRepository.findByCurrencyAndRecordDateMinusSixMonths(targetCurrency, sixMonthsAgo, recordDate)
                             .map(exchangeRate -> {
                                 BigDecimal convertedAmount = transaction.getAmount().multiply(exchangeRate.getRate()).setScale(2, RoundingMode.HALF_EVEN);
-                                transaction.setAmount(convertedAmount);
-                                return transaction;
+                                return transactionMapper.convertToConvertedOutputTransactionDTO(transaction,exchangeRate.getRate(),convertedAmount);
                             })
                             .doOnSuccess(item -> log.debug("Successfully converted transaction amount"))
                             .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "No exchange rate data available for the past six months for the given currency.")))
@@ -44,14 +49,16 @@ public class TransactionServiceImpl implements TransactionService {
                 .doOnError(e -> log.error("Error fetching transaction by ID {}", transactionId, e));
     }
 
-    public Mono<Transaction> getTransactionById(Long transactionId) {
+    public Mono<OutputTransactionDTO> getTransactionById(Long transactionId) {
         log.info("Fetching transaction by ID {}", transactionId);
         return transactionRepository.findById(transactionId)
+                .map(transactionMapper::convertToOutputTransactionDTO)
                 .doOnSuccess(item -> log.debug("Successfully fetched transaction"))
                 .doOnError(e -> log.error("Error fetching transaction by ID {}", transactionId, e));
     }
 
-    public Mono<OutputTransactionDTO> save(Transaction transaction) {
+    public Mono<OutputTransactionDTO> save(InputTransactionDTO inputTransactionDTO) {
+        Transaction transaction = transactionMapper.convertToEntity(inputTransactionDTO);
         BigDecimal roundedAmount = transaction.getAmount().setScale(2, RoundingMode.HALF_EVEN);
         transaction.setAmount(roundedAmount);
         log.info("Saving transaction");

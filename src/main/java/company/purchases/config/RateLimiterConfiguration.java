@@ -8,9 +8,17 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.Duration;
 
+/**
+ * Configuration Spring class to setup a Rate Limiter for the Transaction Controller.
+ */
 @Configuration
 public class RateLimiterConfiguration {
 
+    /**
+     * Transaction controller rate limiter.
+     *
+     * @return the rate limiter
+     */
     @Bean
     public RateLimiter rateLimiter() {
         RateLimiterConfig config = RateLimiterConfig.custom()

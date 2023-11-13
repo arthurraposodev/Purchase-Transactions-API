@@ -19,6 +19,9 @@ import reactor.core.publisher.Flux;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Exchange rate service implementation for updating the exchange rates table according to new data. There is a Resilience4J retry mechanism for the API call.
+ */
 @Service
 @Slf4j
 public class ExchangeRateServiceImpl implements ExchangeRateService {
@@ -27,6 +30,13 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     private final WebClient webClient;
     private final Retry retry;
 
+    /**
+     * Instantiates a new Exchange rate service.
+     *
+     * @param exchangeRateRepository the exchange rate repository
+     * @param webClient              the web client
+     * @param retryRegistry          the retry registry
+     */
     public ExchangeRateServiceImpl(ExchangeRateRepository exchangeRateRepository, WebClient webClient, RetryRegistry retryRegistry) {
         this.exchangeRateRepository = exchangeRateRepository;
         this.webClient = webClient;
