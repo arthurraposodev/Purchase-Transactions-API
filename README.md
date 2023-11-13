@@ -4,9 +4,9 @@
 <br>PURCHASE-TRANSACTIONS-API</h1>
 <h3>◦ Seamless transactions. Simplified integration.</h3>
 <h3>◦ Developed with the software and tools below.</h3>
-
-<p align="center">
+    
 <img src="https://github.com/kaireaver/purchase-transactions-api/actions/workflows/maven.yml/badge.svg" alt="buildBadge" />
+<p align="center">
 <img src="https://img.shields.io/badge/YAML-CB171E.svg?style=flat-square&logo=YAML&logoColor=white" alt="YAML" />
 <img src="https://img.shields.io/badge/GitHub%20Actions-2088FF.svg?style=flat-square&logo=GitHub-Actions&logoColor=white" alt="GitHub%20Actions" />
 <img src="https://img.shields.io/badge/java-%23ED8B00.svg?style=flat-square&logo=openjdk&logoColor=white" alt="java" />
