@@ -36,7 +36,12 @@
 
 ## 📍 Overview
 
-The Purchases Trasactions API  is a production-ready Spring Boot 3 project using Spring Reactive WebFlux. It's designed for reactive, non-blocking transaction processing and exchange rate calculations with persistence, providing high-performance and scalable solutions for financial operations.
+The Purchases Trasactions API  is a production-ready Spring Boot 3 project using Spring Reactive WebFlux.
+It's designed for reactive, non-blocking transaction processing and exchange rate calculations with persistence, 
+providing high-performance and scalable solutions for financial operations.
+
+This implementation caches data periodically from the US Treasury Department's Exchange Rates API to a local database
+for converting purchase transactions values from USD to other currencies.
 
 ## 📦 Features
 
@@ -93,6 +98,18 @@ After application has started up, the REST endpoints are exposed on port 8038 ac
 is available on [SwaggerUI](http://localhost:8038/webjars/swagger-ui/index.html).
 
 Application and Treasury API health may be verified using the [Health](http://localhost:8038/health) endpoint.
+
+### Example Postman Collection
+
+A Postman collection with example requests is also available in the project, inside example/. Link:
+[Postman Collection](example/postman_collection.json)
+
+## Screenshots
+### Creating a new Transaction
+<img src="example/example-screenshot-creation.png" alt="Transaction Creation" />
+
+### Converting a Transaction to a Given Currency
+<img src="example/example-screenshot-conversion.png" alt="Transaction Currency Conversion" />
 
 ## 📂 Repository Structure
 

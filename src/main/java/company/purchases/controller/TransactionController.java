@@ -1,14 +1,16 @@
 package company.purchases.controller;
 
-import company.purchases.domain.Transaction;
 import company.purchases.domain.dto.ConvertedOutputTransactionDTO;
-import company.purchases.domain.dto.OutputTransactionDTO;
 import company.purchases.domain.dto.InputTransactionDTO;
-import company.purchases.domain.mapper.TransactionMapper;
+import company.purchases.domain.dto.OutputTransactionDTO;
 import company.purchases.service.TransactionService;
 import io.github.resilience4j.ratelimiter.RateLimiter;
 import io.github.resilience4j.reactor.ratelimiter.operator.RateLimiterOperator;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,6 +33,12 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/transactions")
 @Slf4j
+@OpenAPIDefinition(info = @Info(
+        title = "Purchase Transactions API",
+        version = "1.0",
+        license = @License(name = "MIT License", url = "https://www.mit.edu/~amini/LICENSE.md"),
+        contact = @Contact(name = "Arthur Raposo")
+))
 @RequiredArgsConstructor
 public class TransactionController {
 

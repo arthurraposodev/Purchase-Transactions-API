@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "e42a7c87-e38f-476d-8bcc-24222755b6a3",
+		"name": "Purchases API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24546156"
+	},
+	"item": [
+		{
+			"name": "Health",
+			"item": [
+				{
+					"name": "Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8038/actuator/health",
+							"host": [
+								"localhost"
+							],
+							"port": "8038",
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get All Transactions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8038/transactions",
+					"host": [
+						"localhost"
+					],
+					"port": "8038",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transaction By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8038/transactions/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8038",
+					"path": [
+						"transactions",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transaction By Id and Convert",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8038/transactions/1/convert?currency=Real",
+					"host": [
+						"localhost"
+					],
+					"port": "8038",
+					"path": [
+						"transactions",
+						"1",
+						"convert"
+					],
+					"query": [
+						{
+							"key": "currency",
+							"value": "Real"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"Monthly Subscription\",\r\n  \"amount\": 23.716,\r\n  \"recordDate\": \"2023-11-09\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8038/transactions",
+					"host": [
+						"localhost"
+					],
+					"port": "8038",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
