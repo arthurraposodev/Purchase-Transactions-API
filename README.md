@@ -6,6 +6,7 @@
 <h3>◦ Developed with the software and tools below.</h3>
 
 <p align="center">
+![Build Badge](https://github.com/kaireaver/purchase-transactions-api/actions/workflows/maven.yml/badge.svg)
 <img src="https://img.shields.io/badge/YAML-CB171E.svg?style=flat-square&logo=YAML&logoColor=white" alt="YAML" />
 <img src="https://img.shields.io/badge/GitHub%20Actions-2088FF.svg?style=flat-square&logo=GitHub-Actions&logoColor=white" alt="GitHub%20Actions" />
 <img src="https://img.shields.io/badge/java-%23ED8B00.svg?style=flat-square&logo=openjdk&logoColor=white" alt="java" />
@@ -216,6 +217,9 @@ Application and Treasury API health may be verified using the [Health](http://lo
 | ---                                                                                                                                                                    | ---                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | [TransactionRepository.java](https://github.com/kaireaver/purchase-transactions-api/blob/main/src/main/java/company/purchases/repository/TransactionRepository.java)   | The code represents a Java interface named "TransactionRepository" in the "company.purchases.repository" package. It extends the "ReactiveCrudRepository" interface, which provides basic CRUD (Create, Read, Update, Delete) operations. The repository is responsible for managing "Transaction" entities and is annotated with "@Repository" to indicate that it is a Spring component. The "Transaction" entity is identified by a "Long" ID.                                                                                                                                                                                       |
 | [ExchangeRateRepository.java](https://github.com/kaireaver/purchase-transactions-api/blob/main/src/main/java/company/purchases/repository/ExchangeRateRepository.java) | The code provided defines a Java interface called ExchangeRateRepository, which is a repository for managing ExchangeRate objects. It extends the ReactiveCrudRepository interface, which provides generic CRUD operations for reactive data access. The repository includes two query methods: findLatestRecordDate, which retrieves the latest record date from the exchange_rates table, and findByCurrencyAndRecordDateMinusSixMonths, which retrieves the most recent exchange rate for a given currency within the last six months. Both methods return Mono objects, indicating that the results will be emitted asynchronously. |
+![Build Badge](https://github.com/kaireaver/purchase-transactions-api/actions/workflows/maven.yml/badge.svg)
+
+When H2 database is not closed correctly, the ID sequence might jump many entries on next object creation, due to an identity cache of up to 32 entries being cached. This jump is to avoid potential collisions.
 
 </details>
 
