@@ -1,11 +1,9 @@
 package company.purchases.domain.dto;
 
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 /**
  * Converted output transaction dto, with exchange rate and converted amount information.

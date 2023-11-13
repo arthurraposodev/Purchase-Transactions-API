@@ -2,10 +2,7 @@ package company.purchases.service.impl;
 
 import company.purchases.domain.ExchangeRateResponse;
 import company.purchases.repository.ExchangeRateRepository;
-import io.github.resilience4j.retry.Retry;
 import io.github.resilience4j.retry.RetryRegistry;
-import org.hibernate.validator.constraints.time.DurationMax;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,7 +15,6 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.function.Function;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class ExchangeRateServiceImplTest {

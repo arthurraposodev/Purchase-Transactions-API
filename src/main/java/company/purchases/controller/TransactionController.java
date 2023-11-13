@@ -26,6 +26,9 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static company.purchases.util.ErrorConstants.DATABASE_ERROR;
+import static company.purchases.util.ErrorConstants.UNEXPECTED_ERROR;
+
 /**
  * Transaction Spring Webflux controller responsible for public-facing operations related to purchase transactions,
  * such as creating a new transaction or fetching transaction data. Resilience4j rate limiter configured for all endpoints.
@@ -67,8 +70,8 @@ public class TransactionController {
                 .transformDeferred(RateLimiterOperator.of(rateLimiter))
                 .doOnSuccess(t -> log.debug("Transaction created successfully"))
                 .doOnError(e -> log.error("Error creating transaction: ", e))
-                .onErrorResume(DataAccessException.class, e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Database error", e)))
-                .onErrorResume(e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error", e)));
+                .onErrorResume(DataAccessException.class, e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, DATABASE_ERROR, e)))
+                .onErrorResume(e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, UNEXPECTED_ERROR, e)));
     }
 
     /**
@@ -92,8 +95,8 @@ public class TransactionController {
                         log.error("Error getting transactions: ", signal.getThrowable());
                     }
                 })
-                .onErrorResume(DataAccessException.class, e -> Flux.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Database error", e)))
-                .onErrorResume(e -> Flux.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error", e)));
+                .onErrorResume(DataAccessException.class, e -> Flux.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, DATABASE_ERROR, e)))
+                .onErrorResume(e -> Flux.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, UNEXPECTED_ERROR, e)));
     }
 
     /**
@@ -128,8 +131,8 @@ public class TransactionController {
                         log.error("Unexpected error when getting transaction by ID and currency: ", e);
                     }
                 })
-                .onErrorResume(DataAccessException.class, e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Database error", e)))
-                .onErrorResume(e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error", e)));
+                .onErrorResume(DataAccessException.class, e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, DATABASE_ERROR, e)))
+                .onErrorResume(e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, UNEXPECTED_ERROR, e)));
     }
 
     /**
@@ -165,8 +168,8 @@ public class TransactionController {
                         log.error("Unexpected error when getting transaction by ID and currency: ", e);
                     }
                 })
-                .onErrorResume(DataAccessException.class, e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Database error", e)))
-                .onErrorResume(e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected error", e)));
+                .onErrorResume(DataAccessException.class, e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, DATABASE_ERROR, e)))
+                .onErrorResume(e -> Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, UNEXPECTED_ERROR, e)));
     }
 
 }

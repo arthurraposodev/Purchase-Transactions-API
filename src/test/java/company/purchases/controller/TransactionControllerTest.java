@@ -1,14 +1,11 @@
 package company.purchases.controller;
 
-import company.purchases.domain.Transaction;
 import company.purchases.domain.dto.ConvertedOutputTransactionDTO;
 import company.purchases.domain.dto.OutputTransactionDTO;
-import company.purchases.domain.mapper.TransactionMapper;
 import company.purchases.service.TransactionService;
 import io.github.resilience4j.ratelimiter.RateLimiter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Flux;
@@ -46,7 +43,6 @@ class TransactionControllerTest {
 
         RateLimiter rateLimiter = mock(RateLimiter.class);
 
-        TransactionMapper transactionMapper = new TransactionMapper(new ModelMapper());
         TransactionController transactionController = new TransactionController(transactionService,rateLimiter);
 
         // Act
@@ -80,7 +76,6 @@ class TransactionControllerTest {
 
         RateLimiter rateLimiter = mock(RateLimiter.class);
 
-        TransactionMapper transactionMapper = new TransactionMapper(new ModelMapper());
         TransactionController transactionController = new TransactionController(transactionService,rateLimiter);
 
         // Act

@@ -1,8 +1,8 @@
 package company.purchases.service;
 
 import company.purchases.domain.dto.ConvertedOutputTransactionDTO;
-import company.purchases.domain.dto.OutputTransactionDTO;
 import company.purchases.domain.dto.InputTransactionDTO;
+import company.purchases.domain.dto.OutputTransactionDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

@@ -2,8 +2,8 @@ package company.purchases.domain.mapper;
 
 import company.purchases.domain.Transaction;
 import company.purchases.domain.dto.ConvertedOutputTransactionDTO;
-import company.purchases.domain.dto.OutputTransactionDTO;
 import company.purchases.domain.dto.InputTransactionDTO;
+import company.purchases.domain.dto.OutputTransactionDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

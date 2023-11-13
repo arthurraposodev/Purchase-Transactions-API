@@ -7,7 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ExchangeRateWebClientConfigTest {
     @InjectMocks
